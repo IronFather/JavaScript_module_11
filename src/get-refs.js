@@ -1,9 +1,10 @@
 
 
-// export default function getRefs() {
-//   return {
-//     searchBoxEl: document.querySelector(`#search-box`),
-//     countryListEl: document.querySelector(`.country-list`),
-//     countryInfoEl: document.querySelector(`.country-info`),
-//   }  
-// };
+export default function getRefs() {
+  return {
+    searchFormEl: document.querySelector(`#search-form`),
+    inputEl: document.querySelector(`input[name=searchQuery]`),
+    galleryEl: document.querySelector(`.gallery`),
+    loadMoreBtnEl: document.querySelector(`.load-more`)
+  }  
+};
