@@ -6,35 +6,30 @@ import getRefs from './get-refs';
 const axios = require('axios').default;
 const refs = getRefs();
 const BASE_URL = `https://pixabay.com/api/`;
-// let fields = [`name,capital,population,flags,languages`];
-
-// key - твой уникальный ключ доступа к API.
-// q - термин для поиска. То, что будет вводить пользователь.
-// image_type - тип изображения. Мы хотим только фотографии, поэтому задай значение photo.
-// orientation - ориентация фотографии. Задай значение horizontal.
-// safesearch - фильтр по возрасту. Задай значение true.
-
-// console.log(refs.searchFormEl);
-// console.log(refs.inputEl);
-// console.log(refs.galleryEl);
-// console.log(refs.loadMoreBtnEl);
+const pixabayKey = `32269625-571fed7951f84920c060dc68c`;
+let queryName = ``;
 
 refs.loadMoreBtnEl.classList.add(`is-hidden`);
-
 refs.searchFormEl.addEventListener(`submit`, onSearchFormSubmit);
 
-function onSearchFormSubmit() {
+function onSearchFormSubmit(e) {
+  e.preventDefault();
+  queryName = e.currentTarget.elements.searchQuery.value.trim();
+  console.log(queryName);
+  let markup = '';
+
   // get axios
   // pixabay
-
+  fetchPhotoCards();
+  console.log(`ok`);
 }
 
 function fetchPhotoCards() {
-  // const url = `${BASE_URL}/?${fields}`; 
+  const url = `${BASE_URL}/?key=${pixabayKey}&q=${queryName}&image_type=photo&orientation=horizontal&safesearch=true`; 
   
   return fetch(url)
-
-}
+  .then(res => res.json())
+} 
 // function makeMarkupOnePhotoCard() {
 //   return `
 //   <div class="photo-card">
