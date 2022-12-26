@@ -5,7 +5,9 @@ export class LoadMoreBtn {
     document.body.insertAdjacentHTML(`beforeend`, markup);
     this.LoadMoreBtnEl = document.querySelector(`.${className}`);
     this.LoadMoreBtnEl.addEventListener(`click`, onLoadMoreBtnClick);
+    this.hide();
   };
+  
 
   hide() {
     this.LoadMoreBtnEl.style.display = `none`;

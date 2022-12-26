@@ -16,11 +16,11 @@ export default class PicturesApi {
   async fetchPhotoCards() {
     const options = new URLSearchParams ({
       key: PIXABAY_KEY,
-      q: this.searchQuery,  
+      q: this.searchQuery, 
+      page: this.page, 
       image_type: `photo`,
       orientation: `horizontal`,
       safesearch: true,
-      page: this.page,
       per_page: 40,
     });
     this.pageIncrement();

@@ -1,7 +1,7 @@
 import './css/styles.css';
 import getRefs from './get-refs';
 import getPicturesApi from './fetchPhotoCards';
-import { notifySearchIsEmpty, notifySomethingIsWrong } from './css/notifications';
+import { notifySearchIsEmpty, notifySomethingIsWrong, notifyChangeSearchQuery, notifySuccessSearch } from './css/notifications';
 import { LoadMoreBtn } from './loadMoreBtn';
 
 const axios = require('axios').default;
@@ -16,10 +16,11 @@ async function onSearchFormSubmit(e) {
 
   PicturesApi.query =  e.currentTarget.elements.searchQuery.value.trim();
   // console.log(PicturesApi.query);
+
   if (PicturesApi.query === ``) {
     notifySearchIsEmpty();
     return;
-  }
+  };
 
   PicturesApi.pageReset();
 
@@ -27,8 +28,18 @@ async function onSearchFormSubmit(e) {
     const { hits, totalHits } = await PicturesApi.fetchPhotoCards();
     // console.log(hits);
     // console.log(totalHits);
+    notifySuccessSearch(totalHits);
 
-    renderPhotoCards(hits)
+    if(totalHits === 0) {
+      notifyChangeSearchQuery();
+      refs.galleryEl.innerHTML = ``;
+      loadMoreBtn.hide();
+      return;
+    }
+
+    renderPhotoCards(hits);
+    loadMoreBtn.show();
+
   } catch (error) {
     notifySomethingIsWrong();
   }
@@ -69,15 +80,20 @@ function renderPhotoCards(hits) {
 };
 
 async function onLoadMoreBtn() {
+  loadMoreBtn.loading();
+
   try {
     const { hits, totalHits } = await PicturesApi.fetchPhotoCards();
-    console.log(hits);
-    console.log(totalHits);
+    // console.log(hits);
+    // console.log(totalHits);
 
-    renderPhotoCards(hits)
+    renderPhotoCards(hits);
+    loadMoreBtn.endLoading();
+
   } catch (error) {
     notifySomethingIsWrong();
   }
 }
+
 
 
