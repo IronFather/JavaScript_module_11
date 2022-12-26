@@ -1,5 +1,3 @@
-
-
 export default function getRefs() {
   return {
     searchFormEl: document.querySelector(`#search-form`),

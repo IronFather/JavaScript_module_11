@@ -17,3 +17,7 @@ body {
 .is-hidden {
   visibility: hidden;
 }
+
+.warning {
+  background-color: rgb(242, 192, 192);
+  }
