@@ -1,17 +1,15 @@
 import './css/styles.css';
-import Notiflix from 'notiflix';
-import 'notiflix/dist/notiflix-3.2.5.min.css';
 import getRefs from './get-refs';
 import getPicturesApi from './fetchPhotoCards';
-
-// export { renderPhotoCards };
+import { notifySearchIsEmpty, notifySomethingIsWrong } from './css/notifications';
+import { LoadMoreBtn } from './loadMoreBtn';
 
 const axios = require('axios').default;
 const refs = getRefs();
 
-refs.loadMoreBtnEl.classList.add(`is-hidden`);
 refs.searchFormEl.addEventListener(`submit`, onSearchFormSubmit);
-const PicturesApi = new getPicturesApi(); 
+const PicturesApi = new getPicturesApi();
+const loadMoreBtn = new LoadMoreBtn(`load-more`, onLoadMoreBtn);
 
 async function onSearchFormSubmit(e) {
   e.preventDefault();
@@ -27,12 +25,12 @@ async function onSearchFormSubmit(e) {
 
   try {
     const { hits, totalHits } = await PicturesApi.fetchPhotoCards();
-    console.log(hits);
-    console.log(totalHits);
+    // console.log(hits);
+    // console.log(totalHits);
 
     renderPhotoCards(hits)
   } catch (error) {
-    notifySomethingIsWrong(); 
+    notifySomethingIsWrong();
   }
 }
 
@@ -67,27 +65,19 @@ function renderPhotoCards(hits) {
   })
   .join('');
 
-  refs.galleryEl.insertAdjacentElement(`beforeend`, images); 
+  refs.galleryEl.insertAdjacentHTML(`beforeend`, images); 
 };
 
-function notifySearchIsEmpty() {
-  Notiflix.Notify.warning(
-    'Search is empty. Please enter some name of pfotos.'
-  );
+async function onLoadMoreBtn() {
+  try {
+    const { hits, totalHits } = await PicturesApi.fetchPhotoCards();
+    console.log(hits);
+    console.log(totalHits);
+
+    renderPhotoCards(hits)
+  } catch (error) {
+    notifySomethingIsWrong();
+  }
 }
 
-function notifySomethingIsWrong() {
-  Notiflix.Notify.failure(
-    'Sorry, something is wrong'
-  );
-}
-
-function notifyChangeSearchQuery() {
-  Notiflix.Notify.info(
-    'Sorry, there are no images matching your search query. Please try again.'
-  );
-}
-
-
-// refs.loadMoreBtnEl.classList.remove(`is-hidden`);
 

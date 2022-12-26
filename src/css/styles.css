@@ -18,6 +18,31 @@ body {
   visibility: hidden;
 }
 
-.warning {
+/* .warning {
   background-color: rgb(242, 192, 192);
+  } */
+
+  .gallery {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-left: 0;
   }
+
+  .photo-card {
+    flex-basis: calc((100% - 60px) / 4);
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .info {
+    display: flex;
+    gap: 10px;
+  }
+
+  
