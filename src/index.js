@@ -1,15 +1,30 @@
 import './css/styles.css';
+
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
+
 import getRefs from './get-refs';
+
 import getPicturesApi from './fetchPhotoCards';
-import { notifySearchIsEmpty, notifySomethingIsWrong, notifyChangeSearchQuery, notifySuccessSearch } from './css/notifications';
+
+import { 
+  notifySearchIsEmpty, 
+  notifySomethingIsWrong, 
+  notifyChangeSearchQuery, 
+  notifySuccessSearch,
+  notifyEndTotalHits
+ } from './css/notifications';
+
 import { LoadMoreBtn } from './loadMoreBtn';
 
-const axios = require('axios').default;
 const refs = getRefs();
 
 refs.searchFormEl.addEventListener(`submit`, onSearchFormSubmit);
 const PicturesApi = new getPicturesApi();
 const loadMoreBtn = new LoadMoreBtn(`load-more`, onLoadMoreBtn);
+let lightbox = new SimpleLightbox('.gallery a', {
+  animationSpeed: 250,
+});
 
 async function onSearchFormSubmit(e) {
   e.preventDefault();
@@ -28,7 +43,6 @@ async function onSearchFormSubmit(e) {
     const { hits, totalHits } = await PicturesApi.fetchPhotoCards();
     // console.log(hits);
     // console.log(totalHits);
-    notifySuccessSearch(totalHits);
 
     if(totalHits === 0) {
       notifyChangeSearchQuery();
@@ -37,7 +51,9 @@ async function onSearchFormSubmit(e) {
       return;
     }
 
+    notifySuccessSearch(totalHits);
     renderPhotoCards(hits);
+    lightbox.refresh();
     loadMoreBtn.show();
 
   } catch (error) {
@@ -57,7 +73,9 @@ function renderPhotoCards(hits) {
     }) => {
     return `
     <div class="photo-card">
-      <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+      <a href="${largeImageURL}">
+        <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+      </a>
       <div class="info">
         <p class="info-item">
           <b>Likes</b><br/>${likes}
@@ -72,7 +90,7 @@ function renderPhotoCards(hits) {
           <b>Downloads</b><br/>${downloads}
         </p>
       </div>
-    </div>`
+    </div>`  
   })
   .join('');
 
@@ -87,13 +105,18 @@ async function onLoadMoreBtn() {
     // console.log(hits);
     // console.log(totalHits);
 
+    if (hits.length < 40) {
+      loadMoreBtn.hide();
+      notifyEndTotalHits();
+    }
+
     renderPhotoCards(hits);
+    lightbox.refresh();
     loadMoreBtn.endLoading();
 
   } catch (error) {
     notifySomethingIsWrong();
   }
 }
-
 
 

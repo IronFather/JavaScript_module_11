@@ -23,3 +23,9 @@ export function notifySuccessSearch(totalHits) {
     `Hooray! We found ${totalHits} images.`
   );
 }
+
+export function notifyEndTotalHits() {
+  Notify.warning(
+    `We're sorry, but you've reached the end of search results.`
+  );
+}
