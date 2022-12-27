@@ -1,6 +1,7 @@
 export class LoadMoreBtn {
   constructor (className, onLoadMoreBtnClick) {
-    const markup = `<button type="button" class="${className}">Load more</button>
+    const markup = `<div class="load-more__wrapper">
+    <button type="button" class="${className}">Load more</button>
     </div>`;
     document.body.insertAdjacentHTML(`beforeend`, markup);
     this.LoadMoreBtnEl = document.querySelector(`.${className}`);
