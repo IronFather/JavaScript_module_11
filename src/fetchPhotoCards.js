@@ -1,7 +1,3 @@
-// import Notiflix from 'notiflix';
-// import 'notiflix/dist/notiflix-3.2.5.min.css';
-// import getRefs from './get-refs';
-// import {  renderPhotoCards } from './index';
 const axios = require('axios').default;
 
 axios.defaults.baseURL = `https://pixabay.com/api/`;
@@ -27,7 +23,6 @@ export default class PicturesApi {
   
     try {
       const {data} = await axios.get(`?${options}`);
-      // console.log(data);
       return data;
   
     } catch (error) {

@@ -28,9 +28,9 @@ let lightbox = new SimpleLightbox('.gallery a', {
 
 async function onSearchFormSubmit(e) {
   e.preventDefault();
+  refs.galleryEl.innerHTML = ``;
 
   PicturesApi.query =  e.currentTarget.elements.searchQuery.value.trim();
-  // console.log(PicturesApi.query);
 
   if (PicturesApi.query === ``) {
     notifySearchIsEmpty();
@@ -41,8 +41,6 @@ async function onSearchFormSubmit(e) {
 
   try {
     const { hits, totalHits } = await PicturesApi.fetchPhotoCards();
-    // console.log(hits);
-    // console.log(totalHits);
 
     if(totalHits === 0) {
       notifyChangeSearchQuery();
@@ -102,8 +100,6 @@ async function onLoadMoreBtn() {
 
   try {
     const { hits, totalHits } = await PicturesApi.fetchPhotoCards();
-    // console.log(hits);
-    // console.log(totalHits);
 
     if (hits.length < 40) {
       loadMoreBtn.hide();
